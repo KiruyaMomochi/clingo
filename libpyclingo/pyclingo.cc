@@ -25,6 +25,13 @@
 // NOTE: the python header has a linker pragma to link with python_d.lib
 //       when _DEBUG is set which is not part of official python releases
 #if defined(_MSC_VER) && defined(_DEBUG) && !defined(CLINGO_UNDEF__DEBUG)
+// Workaround for a VS 2022 issue.
+// NOTE: This workaround knowingly violates the Python.h include order requirement:
+// https://docs.python.org/3/c-api/intro.html#include-files
+#   include <yvals.h>
+# if _MSVC_STL_VERSION >= 143
+#   include <crtdefs.h>
+# endif
 #undef _DEBUG
 #include <Python.h>
 #define _DEBUG
